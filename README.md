@@ -22,30 +22,39 @@ application looks for `application.properties` in `./`
  - For client's authorization use default HTTP authorization header `Authorization: Basic dHJ1c3RlZDphYmMxMjM=
  or trusted:secret login/password combination` 
  - For simplicity OAuth default tables located in the same schema
- - You can edit access and refresh token validity in `oath_client_details` table
+ - You can edit access and refresh token validity in `oauth_client_details` table
 
 ## REST actions
+
 ### Authentication
- - Obtain access token
- ``POST oauth/token?grant_type=password&username=admin&password=abc123``
-    You must provide client's authorization headers
- - Refresh access token
- ``POST oauth/token?grant_type=refresh_token&refresh_token=<REFRESH_TOKEN>``
-    You must provide client's authorization headers
+
+- Obtain access token
+``POST oauth/token?grant_type=password&username=admin&password=abc123``
+You must provide client's authorization headers
+- Refresh access token
+``POST oauth/token?grant_type=refresh_token&refresh_token=<REFRESH_TOKEN>``
+You must provide client's authorization headers
 ### Cart Controller Actions
+
 - addProductToCart - public
 ``POST /api/shop/cart/{cartId}/add/{productId}``
 - createCart - public 
 ``POST /api/shop/cart/customer/{customerId}``
+
 ### Order Controller Actions
+
 - createOrder - public
 ``POST /api/shop/customer/{id}/order``
 - listAllOrders - admin
 ``GET /api/shop/orders``
+
 ### Customer Controller Actions
+
 - createCustomer - admin
 ``POST /api/shop/customers/{name}``
+
 ### Product Controller Actions
+
 - listAllProducts - public
 ``GET /api/shop/products``
 - getProduct - admin
@@ -56,5 +65,5 @@ application looks for `application.properties` in `./`
 ``PUT /api/shop/products/{id}``
 - deleteProduct - admin
 ``DELETE /api/shop/products/{id}``
-    
+
  
