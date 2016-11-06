@@ -23,6 +23,8 @@ application looks for `application.properties` in `./`
  or trusted:secret login/password combination` 
  - For simplicity OAuth default tables located in the same schema
  - You can edit access and refresh token validity in `oauth_client_details` table
+ - To access REST API secured actions you have to provide access token in request params
+ ``access_token=c15de2f5-d7ec-4948-82ac-07ba2d1fb27d``
 
 ## REST actions
 
@@ -34,6 +36,7 @@ You must provide client's authorization headers
 - Refresh access token
 ``POST oauth/token?grant_type=refresh_token&refresh_token=<REFRESH_TOKEN>``
 You must provide client's authorization headers
+
 ### Cart Controller Actions
 
 - addProductToCart - public
