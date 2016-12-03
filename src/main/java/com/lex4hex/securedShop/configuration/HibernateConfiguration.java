@@ -34,6 +34,7 @@ public class HibernateConfiguration {
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("com.lex4hex.securedShop.model");
         sessionFactory.setHibernateProperties(hibernateProperties());
+
         return sessionFactory;
     }
 
@@ -44,6 +45,7 @@ public class HibernateConfiguration {
         dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
         dataSource.setUsername(environment.getRequiredProperty("jdbc.username"));
         dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
+
         return dataSource;
     }
 
@@ -52,6 +54,7 @@ public class HibernateConfiguration {
         properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
         properties.put("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
+
         return properties;
     }
 
@@ -60,6 +63,7 @@ public class HibernateConfiguration {
     public HibernateTransactionManager transactionManager(SessionFactory s) {
         HibernateTransactionManager txManager = new HibernateTransactionManager();
         txManager.setSessionFactory(s);
+
         return txManager;
     }
 }

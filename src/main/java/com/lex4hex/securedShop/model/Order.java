@@ -38,6 +38,7 @@ public class Order {
         if (this == o) {
             return true;
         }
+
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
@@ -53,6 +54,7 @@ public class Order {
     public int hashCode() {
         int result = id;
         result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
+
         return result;
     }
 

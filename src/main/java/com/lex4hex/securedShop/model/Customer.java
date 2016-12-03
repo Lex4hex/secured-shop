@@ -47,6 +47,7 @@ public class Customer {
         if (this == o) {
             return true;
         }
+
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
@@ -73,6 +74,7 @@ public class Customer {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
+
         return result;
     }
 

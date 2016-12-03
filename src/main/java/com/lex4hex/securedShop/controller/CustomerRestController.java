@@ -44,6 +44,7 @@ public class CustomerRestController {
         }
 
         HttpHeaders headers = new HttpHeaders();
+
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
