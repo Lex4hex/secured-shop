@@ -8,18 +8,19 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
-    @SuppressWarnings("unused")
-    private final OAuth2SecurityConfiguration securityConfig;
 
-    @Autowired
-    public MethodSecurityConfig(OAuth2SecurityConfiguration securityConfig) {
-        this.securityConfig = securityConfig;
-    }
+  @SuppressWarnings("unused")
+  private final OAuth2SecurityConfiguration securityConfig;
 
-    @Override
-    protected MethodSecurityExpressionHandler createExpressionHandler() {
-        return new OAuth2MethodSecurityExpressionHandler();
-    }
+  @Autowired
+  public MethodSecurityConfig(OAuth2SecurityConfiguration securityConfig) {
+    this.securityConfig = securityConfig;
+  }
+
+  @Override
+  protected MethodSecurityExpressionHandler createExpressionHandler() {
+    return new OAuth2MethodSecurityExpressionHandler();
+  }
 }

@@ -1,23 +1,22 @@
 package com.lex4hex.securedShop.service;
 
 import com.lex4hex.securedShop.model.Product;
-
 import java.util.List;
 
 public interface ProductService {
 
-    Product findById(Integer id);
+  Product findById(Integer id);
 
-    Product findByName(String name);
+  Product findByName(String name);
 
-    void saveProduct(Product product);
+  void saveProduct(Product product);
 
-    void updateProduct(Product product);
+  void updateProduct(Product product);
 
-    void deleteProductById(Integer id);
+  void deleteProductById(Integer id);
 
-    List<Product> findAllProducts();
+  List<Product> findAllProducts();
 
-    boolean checkIfProductExists(Product product);
+  boolean checkIfProductExists(Product product);
 
 }
