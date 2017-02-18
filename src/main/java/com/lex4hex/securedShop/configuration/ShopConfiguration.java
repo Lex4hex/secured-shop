@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.lex4hex.securedShop")
-//@EnableOAuth2Sso
 public class ShopConfiguration extends SpringBootServletInitializer {
 
   public static void main(String[] args) {
