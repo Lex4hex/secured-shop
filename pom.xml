@@ -15,9 +15,6 @@
     </parent>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springframework.version>4.3.3.RELEASE</springframework.version>
-        <springsecurity.version>4.1.3.RELEASE</springsecurity.version>
-        <springsecurityoauth2.version>2.0.11.RELEASE</springsecurityoauth2.version>
         <jackson.library>2.7.5</jackson.library>
     </properties>
 
@@ -40,7 +37,6 @@
             <artifactId>postgresql</artifactId>
             <version>RELEASE</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
