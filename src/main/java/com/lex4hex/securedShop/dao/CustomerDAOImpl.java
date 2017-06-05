@@ -20,106 +20,106 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CustomerDAOImpl implements BaseDAO<Customer>, CustomerDAO {
 
-  private final SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-  @PersistenceContext
-  private EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-  @Autowired
-  public CustomerDAOImpl(SessionFactory sessionFactory) {
-    this.sessionFactory = sessionFactory;
-  }
-
-  @Override
-  public Customer findById(Integer id) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Customer> criteria = criteriaBuilder.createQuery(Customer.class);
-
-    Root<Customer> root = criteria.from(Customer.class);
-    criteria.select(root);
-    criteria.where(criteriaBuilder.equal(root.get(Customer_.id), id));
-
-    Customer result;
-
-    try {
-      result = entityManager.createQuery(criteria).getSingleResult();
-    } catch (NoResultException e) {
-      return null;
+    @Autowired
+    public CustomerDAOImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    return result;
-  }
+    @Override
+    public Customer findById(Integer id) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Customer> criteria = criteriaBuilder.createQuery(Customer.class);
 
-  @Override
-  public Customer findByName(String name) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Customer> criteria = criteriaBuilder.createQuery(Customer.class);
+        Root<Customer> root = criteria.from(Customer.class);
+        criteria.select(root);
+        criteria.where(criteriaBuilder.equal(root.get(Customer_.id), id));
 
-    Root<Customer> root = criteria.from(Customer.class);
-    criteria.select(root);
-    criteria.where(criteriaBuilder.like(root.get(Customer_.name), name));
+        Customer result;
 
-    Customer result;
+        try {
+            result = entityManager.createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
 
-    try {
-      result = entityManager.createQuery(criteria).getSingleResult();
-    } catch (NoResultException e) {
-      return null;
+        return result;
     }
 
-    return result;
-  }
+    @Override
+    public Customer findByName(String name) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Customer> criteria = criteriaBuilder.createQuery(Customer.class);
 
-  @Override
-  public boolean checkIfCustomerExists(String name) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Customer> criteria = criteriaBuilder.createQuery(Customer.class);
+        Root<Customer> root = criteria.from(Customer.class);
+        criteria.select(root);
+        criteria.where(criteriaBuilder.like(root.get(Customer_.name), name));
 
-    Root<Customer> root = criteria.from(Customer.class);
-    criteria.select(root);
-    criteria.where(criteriaBuilder.like(root.get(Customer_.name), name));
+        Customer result;
 
-    Customer result;
+        try {
+            result = entityManager.createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
 
-    try {
-      result = entityManager.createQuery(criteria).getSingleResult();
-    } catch (NoResultException e) {
-      return false;
+        return result;
     }
 
-    return result != null;
-  }
+    @Override
+    public boolean checkIfCustomerExists(String name) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Customer> criteria = criteriaBuilder.createQuery(Customer.class);
 
-  @Override
-  public List<Customer> findAll() {
-    Session session = sessionFactory.getCurrentSession();
-    String hql = "from Customer";
-    TypedQuery<Customer> query = entityManager.createQuery(hql, Customer.class);
+        Root<Customer> root = criteria.from(Customer.class);
+        criteria.select(root);
+        criteria.where(criteriaBuilder.like(root.get(Customer_.name), name));
 
-    return query.getResultList();
-  }
+        Customer result;
 
-  @Override
-  @Transactional
-  public void save(Customer customer) {
-    Session session = sessionFactory.getCurrentSession();
-    session.persist(customer);
+        try {
+            result = entityManager.createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return false;
+        }
 
-  }
-
-  @Override
-  public void update(Customer customer) {
-    Session session = sessionFactory.getCurrentSession();
-    session.saveOrUpdate(customer);
-  }
-
-  @Override
-  public void deleteById(Integer id) {
-    Session session = sessionFactory.getCurrentSession();
-    Customer customer = session.load(Customer.class, id);
-
-    if (customer != null) {
-      session.delete(customer);
+        return result != null;
     }
-  }
+
+    @Override
+    public List<Customer> findAll() {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "from Customer";
+        TypedQuery<Customer> query = entityManager.createQuery(hql, Customer.class);
+
+        return query.getResultList();
+    }
+
+    @Override
+    @Transactional
+    public void save(Customer customer) {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(customer);
+
+    }
+
+    @Override
+    public void update(Customer customer) {
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(customer);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        Session session = sessionFactory.getCurrentSession();
+        Customer customer = session.load(Customer.class, id);
+
+        if (customer != null) {
+            session.delete(customer);
+        }
+    }
 }

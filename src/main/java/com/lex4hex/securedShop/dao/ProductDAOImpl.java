@@ -20,102 +20,102 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProductDAOImpl implements BaseDAO<Product>, ProductDAO {
 
-  private final SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-  @PersistenceContext
-  private EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-  @Autowired
-  public ProductDAOImpl(SessionFactory sessionFactory) {
-    this.sessionFactory = sessionFactory;
-  }
-
-  @Override
-  public Product findById(Integer id) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Product> criteria = criteriaBuilder.createQuery(Product.class);
-
-    Root<Product> root = criteria.from(Product.class);
-    criteria.select(root);
-    criteria.where(criteriaBuilder.equal(root.get(Product_.id), id));
-
-    Product result;
-
-    try {
-      result = entityManager.createQuery(criteria).getSingleResult();
-    } catch (NoResultException e) {
-      return null;
+    @Autowired
+    public ProductDAOImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    return result;
-  }
+    @Override
+    public Product findById(Integer id) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = criteriaBuilder.createQuery(Product.class);
 
-  @Override
-  public Product findByName(String name) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Product> criteria = criteriaBuilder.createQuery(Product.class);
+        Root<Product> root = criteria.from(Product.class);
+        criteria.select(root);
+        criteria.where(criteriaBuilder.equal(root.get(Product_.id), id));
 
-    Root<Product> root = criteria.from(Product.class);
-    criteria.select(root);
-    criteria.where(criteriaBuilder.like(root.get(Product_.name), name));
+        Product result;
 
-    Product result;
+        try {
+            result = entityManager.createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
 
-    try {
-      result = entityManager.createQuery(criteria).getSingleResult();
-    } catch (NoResultException e) {
-      return null;
+        return result;
     }
 
-    return result;
-  }
+    @Override
+    public Product findByName(String name) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = criteriaBuilder.createQuery(Product.class);
 
-  @Override
-  public boolean checkIfProductExists(Product product) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Product> criteria = criteriaBuilder.createQuery(Product.class);
+        Root<Product> root = criteria.from(Product.class);
+        criteria.select(root);
+        criteria.where(criteriaBuilder.like(root.get(Product_.name), name));
 
-    Root<Product> root = criteria.from(Product.class);
-    criteria.select(root);
-    criteria.where(criteriaBuilder.like(root.get(Product_.name), product.getName()));
+        Product result;
 
-    Product result;
+        try {
+            result = entityManager.createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
 
-    try {
-      result = entityManager.createQuery(criteria).getSingleResult();
-    } catch (NoResultException e) {
-      return false;
+        return result;
     }
 
-    return result != null;
-  }
+    @Override
+    public boolean checkIfProductExists(Product product) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = criteriaBuilder.createQuery(Product.class);
 
-  @Override
-  public List<Product> findAll() {
-    Session session = sessionFactory.getCurrentSession();
-    String hql = "from Product";
+        Root<Product> root = criteria.from(Product.class);
+        criteria.select(root);
+        criteria.where(criteriaBuilder.like(root.get(Product_.name), product.getName()));
 
-    TypedQuery<Product> query = entityManager.createQuery(hql, Product.class);
+        Product result;
 
-    return query.getResultList();
-  }
+        try {
+            result = entityManager.createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return false;
+        }
 
-  @Override
-  public void save(Product product) {
-    Session session = sessionFactory.getCurrentSession();
-    session.persist(product);
-  }
+        return result != null;
+    }
 
-  @Override
-  public void update(Product product) {
-    Session session = sessionFactory.getCurrentSession();
-    session.saveOrUpdate(product);
-  }
+    @Override
+    public List<Product> findAll() {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "from Product";
 
-  @Override
-  public void deleteById(Integer id) {
-    Session session = sessionFactory.getCurrentSession();
-    Product product = session.load(Product.class, id);
-    session.delete(product);
-  }
+        TypedQuery<Product> query = entityManager.createQuery(hql, Product.class);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public void save(Product product) {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(product);
+    }
+
+    @Override
+    public void update(Product product) {
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(product);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        Session session = sessionFactory.getCurrentSession();
+        Product product = session.load(Product.class, id);
+        session.delete(product);
+    }
 }

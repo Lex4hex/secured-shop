@@ -24,106 +24,106 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class OrderDAOImpl implements BaseDAO<Order>, OrderDAO {
 
-  private final SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-  @PersistenceContext
-  private EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-  @Autowired
-  public OrderDAOImpl(SessionFactory sessionFactory) {
-    this.sessionFactory = sessionFactory;
-  }
-
-  @Override
-  public List<Order> findAllByCustomerId(Integer id) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Order> criteria = criteriaBuilder.createQuery(Order.class);
-
-    Root<Order> root = criteria.from(Order.class);
-    criteria.select(root);
-
-    Join<Order, Customer> customerJoin = root.join(Order_.customer);
-    criteria.where(criteriaBuilder.equal(customerJoin.get(Customer_.id), id));
-
-    List<Order> result;
-
-    try {
-      result = entityManager.createQuery(criteria).getResultList();
-    } catch (NoResultException e) {
-      return null;
+    @Autowired
+    public OrderDAOImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    return result;
-  }
+    @Override
+    public List<Order> findAllByCustomerId(Integer id) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Order> criteria = criteriaBuilder.createQuery(Order.class);
 
-  @Override
-  public Order findProductsByOrderId(Integer id) {
-    return null;
-  }
+        Root<Order> root = criteria.from(Order.class);
+        criteria.select(root);
 
-  @Override
-  public Order findById(Integer id) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Order> criteria = criteriaBuilder.createQuery(Order.class);
+        Join<Order, Customer> customerJoin = root.join(Order_.customer);
+        criteria.where(criteriaBuilder.equal(customerJoin.get(Customer_.id), id));
 
-    Root<Order> root = criteria.from(Order.class);
-    criteria.select(root);
-    criteria.where(criteriaBuilder.equal(root.get(Order_.id), id));
+        List<Order> result;
 
-    Order result;
+        try {
+            result = entityManager.createQuery(criteria).getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
 
-    try {
-      result = entityManager.createQuery(criteria).getSingleResult();
-    } catch (NoResultException e) {
-      return null;
+        return result;
     }
 
-    return result;
-  }
+    @Override
+    public Order findProductsByOrderId(Integer id) {
+        return null;
+    }
 
-  @Override
-  public List<Order> findAll() {
-    Session session = sessionFactory.getCurrentSession();
-    String hql = "from Order";
-    TypedQuery<Order> query = entityManager.createQuery(hql, Order.class);
+    @Override
+    public Order findById(Integer id) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Order> criteria = criteriaBuilder.createQuery(Order.class);
 
-    return query.getResultList();
-  }
+        Root<Order> root = criteria.from(Order.class);
+        criteria.select(root);
+        criteria.where(criteriaBuilder.equal(root.get(Order_.id), id));
 
-  @Override
-  public void save(Order order) {
-    Session session = sessionFactory.getCurrentSession();
-    session.persist(order);
-  }
+        Order result;
 
-  @Override
-  public void createOrder(Integer customerId) {
-    Session session = sessionFactory.getCurrentSession();
-    Order order = new Order();
+        try {
+            result = entityManager.createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
 
-    Customer customer = session.get(Customer.class, customerId);
-    Cart cart = customer.getCart();
+        return result;
+    }
 
-    order.setCustomer(customer);
-    order.setProducts(cart.getProducts());
+    @Override
+    public List<Order> findAll() {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "from Order";
+        TypedQuery<Order> query = entityManager.createQuery(hql, Order.class);
 
-    // Empty cart and
-    customer.setCart(null);
-    session.delete(cart);
+        return query.getResultList();
+    }
 
-    session.merge(order);
-  }
+    @Override
+    public void save(Order order) {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(order);
+    }
 
-  @Override
-  public void update(Order order) {
-    Session session = sessionFactory.getCurrentSession();
-    session.saveOrUpdate(order);
-  }
+    @Override
+    public void createOrder(Integer customerId) {
+        Session session = sessionFactory.getCurrentSession();
+        Order order = new Order();
 
-  @Override
-  public void deleteById(Integer id) {
-    Session session = sessionFactory.getCurrentSession();
-    Order order = session.load(Order.class, id);
-    session.delete(order);
-  }
+        Customer customer = session.get(Customer.class, customerId);
+        Cart cart = customer.getCart();
+
+        order.setCustomer(customer);
+        order.setProducts(cart.getProducts());
+
+        // Empty cart and
+        customer.setCart(null);
+        session.delete(cart);
+
+        session.merge(order);
+    }
+
+    @Override
+    public void update(Order order) {
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(order);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        Session session = sessionFactory.getCurrentSession();
+        Order order = session.load(Order.class, id);
+        session.delete(order);
+    }
 }

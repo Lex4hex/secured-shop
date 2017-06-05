@@ -19,72 +19,72 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CartRestController {
 
-  private final CartServiceImpl cartService;
-  private final CustomerServiceImpl customerService;
-  private final ProductServiceImpl productService;
+    private final CartServiceImpl cartService;
+    private final CustomerServiceImpl customerService;
+    private final ProductServiceImpl productService;
 
-  @Autowired
-  public CartRestController(CartServiceImpl cartService, CustomerServiceImpl customerService,
-      ProductServiceImpl productService) {
-    this.cartService = cartService;
-    this.customerService = customerService;
-    this.productService = productService;
-  }
-
-  /**
-   * Add product to cart
-   *
-   * @param cartId ID of cart
-   * @param productId ID of product to add
-   */
-  @RequestMapping(value = "/api/shop/cart/{cartId}/add/{productId}", method = RequestMethod.POST)
-  public ResponseEntity<Void> addProductToCart(@PathVariable("cartId") int cartId,
-      @PathVariable("productId") int productId) {
-    try {
-      Product product = productService.findById(productId);
-      Cart cart = cartService.findById(cartId);
-
-      if (product == null || cart == null) {
-        return new ResponseEntity<>(
-            HttpStatus.NOT_FOUND);
-      }
-
-      cartService.addProduct(cartId, productId);
-    } catch (PersistenceException e) {
-      return new ResponseEntity<>(
-          HttpStatus.INTERNAL_SERVER_ERROR);
+    @Autowired
+    public CartRestController(CartServiceImpl cartService, CustomerServiceImpl customerService,
+        ProductServiceImpl productService) {
+        this.cartService = cartService;
+        this.customerService = customerService;
+        this.productService = productService;
     }
 
-    HttpHeaders headers = new HttpHeaders();
+    /**
+     * Add product to cart
+     *
+     * @param cartId ID of cart
+     * @param productId ID of product to add
+     */
+    @RequestMapping(value = "/api/shop/cart/{cartId}/add/{productId}", method = RequestMethod.POST)
+    public ResponseEntity<Void> addProductToCart(@PathVariable("cartId") int cartId,
+        @PathVariable("productId") int productId) {
+        try {
+            Product product = productService.findById(productId);
+            Cart cart = cartService.findById(cartId);
 
-    return new ResponseEntity<>(headers, HttpStatus.CREATED);
-  }
+            if (product == null || cart == null) {
+                return new ResponseEntity<>(
+                    HttpStatus.NOT_FOUND);
+            }
 
-  /**
-   * Create cart for provided customer
-   *
-   * @param customerId ID of customer to create cart for
-   */
-  @RequestMapping(value = "/api/shop/cart/customer/{customerId}", method = RequestMethod.POST)
-  public ResponseEntity<Void> createCart(@PathVariable("customerId") int customerId) {
-    try {
-      Customer customer = customerService.findById(customerId);
+            cartService.addProduct(cartId, productId);
+        } catch (PersistenceException e) {
+            return new ResponseEntity<>(
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-      if (customer == null) {
-        return new ResponseEntity<>(
-            HttpStatus.NOT_FOUND);
-      } else {
-        Cart cart = new Cart();
-        cart.setCustomer(customer);
-        cartService.saveCart(cart);
-      }
-    } catch (PersistenceException e) {
-      return new ResponseEntity<>(
-          HttpStatus.INTERNAL_SERVER_ERROR);
+        HttpHeaders headers = new HttpHeaders();
+
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    HttpHeaders headers = new HttpHeaders();
+    /**
+     * Create cart for provided customer
+     *
+     * @param customerId ID of customer to create cart for
+     */
+    @RequestMapping(value = "/api/shop/cart/customer/{customerId}", method = RequestMethod.POST)
+    public ResponseEntity<Void> createCart(@PathVariable("customerId") int customerId) {
+        try {
+            Customer customer = customerService.findById(customerId);
 
-    return new ResponseEntity<>(headers, HttpStatus.CREATED);
-  }
+            if (customer == null) {
+                return new ResponseEntity<>(
+                    HttpStatus.NOT_FOUND);
+            } else {
+                Cart cart = new Cart();
+                cart.setCustomer(customer);
+                cartService.saveCart(cart);
+            }
+        } catch (PersistenceException e) {
+            return new ResponseEntity<>(
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
 }

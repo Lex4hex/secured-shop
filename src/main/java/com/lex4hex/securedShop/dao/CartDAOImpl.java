@@ -28,100 +28,100 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableCaching
 public class CartDAOImpl implements BaseDAO<Cart>, CartDAO {
 
-  private final SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-  @PersistenceContext
-  private EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-  @Autowired
-  public CartDAOImpl(SessionFactory sessionFactory) {
-    this.sessionFactory = sessionFactory;
-  }
-
-  @Override
-  public Cart findById(Integer id) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Cart> criteria = criteriaBuilder.createQuery(Cart.class);
-
-    Root<Cart> root = criteria.from(Cart.class);
-    criteria.select(root);
-    criteria.where(criteriaBuilder.equal(root.get(Cart_.id), id));
-
-    Cart result;
-
-    try {
-      result = entityManager.createQuery(criteria).getSingleResult();
-    } catch (NoResultException e) {
-      return null;
+    @Autowired
+    public CartDAOImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    return result;
-  }
+    @Override
+    public Cart findById(Integer id) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Cart> criteria = criteriaBuilder.createQuery(Cart.class);
 
-  @Override
-  public List<Cart> findAll() {
-    Session session = sessionFactory.getCurrentSession();
-    String hql = "from Cart";
-    TypedQuery<Cart> query = entityManager.createQuery(hql, Cart.class);
+        Root<Cart> root = criteria.from(Cart.class);
+        criteria.select(root);
+        criteria.where(criteriaBuilder.equal(root.get(Cart_.id), id));
 
-    return query.getResultList();
-  }
+        Cart result;
 
-  @Override
-  public void save(Cart cart) {
-    Session session = sessionFactory.getCurrentSession();
-    session.persist(cart);
-  }
+        try {
+            result = entityManager.createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
 
-  @Override
-  public void update(Cart cart) {
-    Session session = sessionFactory.getCurrentSession();
-    session.saveOrUpdate(cart);
-  }
-
-  @Override
-  public void deleteById(Integer id) {
-    Session session = sessionFactory.getCurrentSession();
-    Cart cart = session.load(Cart.class, id);
-
-    if (cart != null) {
-      session.delete(cart);
-    }
-  }
-
-  @Override
-  public Cart findByCustomerId(Integer id) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Cart> criteria = criteriaBuilder.createQuery(Cart.class);
-
-    Root<Cart> root = criteria.from(Cart.class);
-    criteria.select(root);
-
-    Join<Cart, Customer> customerJoin = root.join(Cart_.customer);
-    criteria.where(criteriaBuilder.equal(customerJoin.get(Customer_.id), id));
-
-    Cart result;
-
-    try {
-      result = entityManager.createQuery(criteria).getSingleResult();
-    } catch (NoResultException e) {
-      return null;
+        return result;
     }
 
-    return result;
-  }
+    @Override
+    public List<Cart> findAll() {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "from Cart";
+        TypedQuery<Cart> query = entityManager.createQuery(hql, Cart.class);
 
-  @Override
-  public void addProduct(Integer cartId, Integer productId) {
-    Session session = sessionFactory.getCurrentSession();
-
-    Cart cart = entityManager.find(Cart.class, cartId);
-    Product product = entityManager.find(Product.class, productId);
-
-    if (cart != null && product != null) {
-      cart.getProducts().add(product);
-      session.persist(cart);
+        return query.getResultList();
     }
-  }
+
+    @Override
+    public void save(Cart cart) {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(cart);
+    }
+
+    @Override
+    public void update(Cart cart) {
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(cart);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        Session session = sessionFactory.getCurrentSession();
+        Cart cart = session.load(Cart.class, id);
+
+        if (cart != null) {
+            session.delete(cart);
+        }
+    }
+
+    @Override
+    public Cart findByCustomerId(Integer id) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Cart> criteria = criteriaBuilder.createQuery(Cart.class);
+
+        Root<Cart> root = criteria.from(Cart.class);
+        criteria.select(root);
+
+        Join<Cart, Customer> customerJoin = root.join(Cart_.customer);
+        criteria.where(criteriaBuilder.equal(customerJoin.get(Customer_.id), id));
+
+        Cart result;
+
+        try {
+            result = entityManager.createQuery(criteria).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+
+        return result;
+    }
+
+    @Override
+    public void addProduct(Integer cartId, Integer productId) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Cart cart = entityManager.find(Cart.class, cartId);
+        Product product = entityManager.find(Product.class, productId);
+
+        if (cart != null && product != null) {
+            cart.getProducts().add(product);
+            session.persist(cart);
+        }
+    }
 
 }

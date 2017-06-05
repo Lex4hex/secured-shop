@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EntityScan(basePackages = "com.lex4hex.securedShop.model")
 public class HibernateConfiguration {
 
-  @Bean
-  public HibernateJpaSessionFactoryBean sessionFactory() {
-    return new HibernateJpaSessionFactoryBean();
-  }
+    @Bean
+    public HibernateJpaSessionFactoryBean sessionFactory() {
+        return new HibernateJpaSessionFactoryBean();
+    }
 }

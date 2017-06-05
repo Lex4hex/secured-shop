@@ -5,18 +5,18 @@ import java.util.List;
 
 public interface CustomerService {
 
-  Customer findById(Integer id);
+    Customer findById(Integer id);
 
-  void saveCustomer(Customer customer);
+    void saveCustomer(Customer customer);
 
-  Customer findByName(String name);
+    Customer findByName(String name);
 
-  void updateCustomer(Customer customer);
+    void updateCustomer(Customer customer);
 
-  void deleteCustomerById(Integer id);
+    void deleteCustomerById(Integer id);
 
-  List<Customer> findAllCustomers();
+    List<Customer> findAllCustomers();
 
-  boolean checkIfCustomerExists(String name);
+    boolean checkIfCustomerExists(String name);
 
 }

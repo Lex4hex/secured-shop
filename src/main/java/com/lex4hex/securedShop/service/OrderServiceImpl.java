@@ -11,49 +11,49 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {
 
-  private final OrderDAOImpl orderDAO;
+    private final OrderDAOImpl orderDAO;
 
-  @Autowired
-  public OrderServiceImpl(OrderDAOImpl orderDAO) {
-    this.orderDAO = orderDAO;
-  }
+    @Autowired
+    public OrderServiceImpl(OrderDAOImpl orderDAO) {
+        this.orderDAO = orderDAO;
+    }
 
-  @Override
-  @Transactional
-  public List<Order> findAllOrders() {
-    List<Order> orders = orderDAO.findAll();
-    orders.forEach(order -> Hibernate.initialize(order.getProducts()));
+    @Override
+    @Transactional
+    public List<Order> findAllOrders() {
+        List<Order> orders = orderDAO.findAll();
+        orders.forEach(order -> Hibernate.initialize(order.getProducts()));
 
-    return orders;
-  }
+        return orders;
+    }
 
-  @Override
-  public Order findById(Integer id) {
-    return orderDAO.findById(id);
-  }
+    @Override
+    public Order findById(Integer id) {
+        return orderDAO.findById(id);
+    }
 
-  @Override
-  public void saveOrder(Order order) {
-    orderDAO.save(order);
-  }
+    @Override
+    public void saveOrder(Order order) {
+        orderDAO.save(order);
+    }
 
-  @Override
-  public void updateOrder(Order order) {
-    orderDAO.update(order);
-  }
+    @Override
+    public void updateOrder(Order order) {
+        orderDAO.update(order);
+    }
 
-  @Override
-  public void deleteOrderById(Integer id) {
-    orderDAO.deleteById(id);
-  }
+    @Override
+    public void deleteOrderById(Integer id) {
+        orderDAO.deleteById(id);
+    }
 
-  @Override
-  public void createOrder(Integer customer) {
-    orderDAO.createOrder(customer);
-  }
+    @Override
+    public void createOrder(Integer customer) {
+        orderDAO.createOrder(customer);
+    }
 
-  @Override
-  public List<Order> findAllByCustomerId(Integer id) {
-    return orderDAO.findAllByCustomerId(id);
-  }
+    @Override
+    public List<Order> findAllByCustomerId(Integer id) {
+        return orderDAO.findAllByCustomerId(id);
+    }
 }

@@ -19,127 +19,127 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 public class ProductRestController {
 
-  private final ProductServiceImpl productService;
+    private final ProductServiceImpl productService;
 
-  @Autowired
-  public ProductRestController(ProductServiceImpl productService) {
-    this.productService = productService;
-  }
-
-  /**
-   * Get list of all products
-   */
-  @RequestMapping(value = "/api/shop/products", method = RequestMethod.GET,
-      produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<Product>> listAllProducts() {
-    List<Product> products;
-
-    try {
-      products = productService.findAllProducts();
-    } catch (PersistenceException e) {
-      return new ResponseEntity<>(
-          HttpStatus.INTERNAL_SERVER_ERROR);
+    @Autowired
+    public ProductRestController(ProductServiceImpl productService) {
+        this.productService = productService;
     }
 
-    if (products.isEmpty()) {
-      return new ResponseEntity<>(
-          HttpStatus.NOT_FOUND);
+    /**
+     * Get list of all products
+     */
+    @RequestMapping(value = "/api/shop/products", method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Product>> listAllProducts() {
+        List<Product> products;
+
+        try {
+            products = productService.findAllProducts();
+        } catch (PersistenceException e) {
+            return new ResponseEntity<>(
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (products.isEmpty()) {
+            return new ResponseEntity<>(
+                HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    return new ResponseEntity<>(products, HttpStatus.OK);
-  }
+    /**
+     * Get product with provided ID
+     *
+     * @param id ID of product
+     */
+    @RequestMapping(value = "/api/shop/products/{id}", method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Product> getProduct(@PathVariable("id") int id) {
+        Product product;
 
-  /**
-   * Get product with provided ID
-   *
-   * @param id ID of product
-   */
-  @RequestMapping(value = "/api/shop/products/{id}", method = RequestMethod.GET,
-      produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Product> getProduct(@PathVariable("id") int id) {
-    Product product;
+        try {
+            product = productService.findById(id);
 
-    try {
-      product = productService.findById(id);
+            if (product == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (PersistenceException e) {
+            return new ResponseEntity<>(
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-      if (product == null) {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-      }
-    } catch (PersistenceException e) {
-      return new ResponseEntity<>(
-          HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    return new ResponseEntity<>(product, HttpStatus.OK);
-  }
+    /**
+     * Create product with provided JSON object
+     *
+     * @param product JSON product object after auto-mapping
+     */
+    @RequestMapping(value = "/api/shop/products", method = RequestMethod.POST)
+    public ResponseEntity<Void> createProduct(@RequestBody Product product,
+        UriComponentsBuilder ucBuilder) {
+        try {
+            if (productService.checkIfProductExists(product)) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
 
-  /**
-   * Create product with provided JSON object
-   *
-   * @param product JSON product object after auto-mapping
-   */
-  @RequestMapping(value = "/api/shop/products", method = RequestMethod.POST)
-  public ResponseEntity<Void> createProduct(@RequestBody Product product,
-      UriComponentsBuilder ucBuilder) {
-    try {
-      if (productService.checkIfProductExists(product)) {
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
-      }
+            productService.saveProduct(product);
+        } catch (PersistenceException e) {
+            return new ResponseEntity<>(
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-      productService.saveProduct(product);
-    } catch (PersistenceException e) {
-      return new ResponseEntity<>(
-          HttpStatus.INTERNAL_SERVER_ERROR);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(
+            ucBuilder.path("/api/shop/products/{id}").buildAndExpand(product.getId()).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(
-        ucBuilder.path("/api/shop/products/{id}").buildAndExpand(product.getId()).toUri());
-    return new ResponseEntity<>(headers, HttpStatus.CREATED);
-  }
+    /**
+     * Update product with provided JSON object
+     *
+     * @param product JSON product object after auto-mapping
+     */
+    @RequestMapping(value = "/api/shop/products", method = RequestMethod.PUT)
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+        try {
+            if (productService.checkIfProductExists(product)) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
 
-  /**
-   * Update product with provided JSON object
-   *
-   * @param product JSON product object after auto-mapping
-   */
-  @RequestMapping(value = "/api/shop/products", method = RequestMethod.PUT)
-  public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-    try {
-      if (productService.checkIfProductExists(product)) {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-      }
+            productService.updateProduct(product);
+        } catch (PersistenceException e) {
+            return new ResponseEntity<>(
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-      productService.updateProduct(product);
-    } catch (PersistenceException e) {
-      return new ResponseEntity<>(
-          HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    return new ResponseEntity<>(product, HttpStatus.OK);
-  }
+    /**
+     * Delete product by provided ID
+     *
+     * @param id ID of product to delete
+     */
+    @RequestMapping(value = "/api/shop/products/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Product> deleteProduct(@PathVariable("id") int id) {
+        try {
+            Product product = productService.findById(id);
 
-  /**
-   * Delete product by provided ID
-   *
-   * @param id ID of product to delete
-   */
-  @RequestMapping(value = "/api/shop/products/{id}", method = RequestMethod.DELETE)
-  public ResponseEntity<Product> deleteProduct(@PathVariable("id") int id) {
-    try {
-      Product product = productService.findById(id);
+            if (product == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
 
-      if (product == null) {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-      }
+            productService.deleteProductById(id);
+        } catch (PersistenceException e) {
+            return new ResponseEntity<>(
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-      productService.deleteProductById(id);
-    } catch (PersistenceException e) {
-      return new ResponseEntity<>(
-          HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-  }
 
 }

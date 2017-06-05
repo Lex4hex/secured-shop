@@ -15,37 +15,37 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CustomerRestController {
 
-  private final CustomerServiceImpl customerService;
+    private final CustomerServiceImpl customerService;
 
-  @Autowired
-  public CustomerRestController(CustomerServiceImpl customerService) {
-    this.customerService = customerService;
-  }
-
-  /**
-   * Create customer with provided name
-   *
-   * @param name Name of the customer to create
-   */
-  @RequestMapping(value = "/api/shop/customers/{name}", method = RequestMethod.POST)
-  public ResponseEntity<Void> createCustomer(@PathVariable("name") String name) {
-    try {
-      if (customerService.checkIfCustomerExists(name)) {
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
-      }
-
-      Customer customer = new Customer();
-      customer.setName(name);
-
-      customerService.saveCustomer(customer);
-    } catch (PersistenceException e) {
-      return new ResponseEntity<>(
-          HttpStatus.INTERNAL_SERVER_ERROR);
+    @Autowired
+    public CustomerRestController(CustomerServiceImpl customerService) {
+        this.customerService = customerService;
     }
 
-    HttpHeaders headers = new HttpHeaders();
+    /**
+     * Create customer with provided name
+     *
+     * @param name Name of the customer to create
+     */
+    @RequestMapping(value = "/api/shop/customers/{name}", method = RequestMethod.POST)
+    public ResponseEntity<Void> createCustomer(@PathVariable("name") String name) {
+        try {
+            if (customerService.checkIfCustomerExists(name)) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
 
-    return new ResponseEntity<>(headers, HttpStatus.CREATED);
-  }
+            Customer customer = new Customer();
+            customer.setName(name);
+
+            customerService.saveCustomer(customer);
+        } catch (PersistenceException e) {
+            return new ResponseEntity<>(
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
 
 }

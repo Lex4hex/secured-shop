@@ -10,16 +10,16 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Order.class)
 public class Order_ {
 
-  /**
-   * The constant id.
-   */
-  public static volatile SingularAttribute<Order, Integer> id;
-  /**
-   * The constant customer.
-   */
-  public static volatile SingularAttribute<Order, Customer> customer;
-  /**
-   * The constant products.
-   */
-  public static volatile SingularAttribute<Order, List<Product>> products;
+    /**
+     * The constant id.
+     */
+    public static volatile SingularAttribute<Order, Integer> id;
+    /**
+     * The constant customer.
+     */
+    public static volatile SingularAttribute<Order, Customer> customer;
+    /**
+     * The constant products.
+     */
+    public static volatile SingularAttribute<Order, List<Product>> products;
 }

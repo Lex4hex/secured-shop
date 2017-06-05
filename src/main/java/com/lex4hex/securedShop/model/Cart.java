@@ -19,75 +19,76 @@ import javax.persistence.Table;
 @Table(name = "cart", schema = "public", catalog = "shop")
 public class Cart {
 
-  private int id;
-  private Timestamp creationTime;
-  private List<Product> products;
-  private Customer customer;
+    private int id;
+    private Timestamp creationTime;
+    private List<Product> products;
+    private Customer customer;
 
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  @Basic
-  @Column(name = "creation_time", insertable = false, updatable = false)
-  public Timestamp getCreationTime() {
-    return creationTime;
-  }
-
-  public void setCreationTime(Timestamp creationTime) {
-    this.creationTime = creationTime;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getId() {
+        return id;
     }
 
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    Cart that = (Cart) o;
+    @Basic
+    @Column(name = "creation_time", insertable = false, updatable = false)
+    public Timestamp getCreationTime() {
+        return creationTime;
+    }
 
-    return id == that.id &&
-        (creationTime != null ? creationTime.equals(that.creationTime) : that.creationTime == null);
-  }
+    public void setCreationTime(Timestamp creationTime) {
+        this.creationTime = creationTime;
+    }
 
-  @Override
-  public int hashCode() {
-    int result = id;
-    result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
 
-    return result;
-  }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-  @OneToOne
-  @JoinColumn(name = "customer_id")
-  public Customer getCustomer() {
-    return customer;
-  }
+        Cart that = (Cart) o;
 
-  public void setCustomer(Customer customer) {
-    this.customer = customer;
-  }
+        return id == that.id &&
+            (creationTime != null ? creationTime.equals(that.creationTime)
+                : that.creationTime == null);
+    }
 
-  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-  @JoinTable(name = "cart_products", joinColumns = @JoinColumn(name = "cart_id"),
-      inverseJoinColumns = @JoinColumn(name = "product_id"))
-  public List<Product> getProducts() {
-    return products;
-  }
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
 
-  public void setProducts(List<Product> products) {
-    this.products = products;
-  }
+        return result;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "customer_id")
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "cart_products", joinColumns = @JoinColumn(name = "cart_id"),
+        inverseJoinColumns = @JoinColumn(name = "product_id"))
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
 }
