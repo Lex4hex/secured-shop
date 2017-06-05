@@ -5,17 +5,16 @@
 - Java 8
 - Postgres 9.6
 - Hibernate 5.2
-- Spring MVC, Security 4.3
+- Spring MVC, Boot, Security 4.3
 - Spring OAuth 2
-- Tomcat 8
 - Maven 3
 
 ## Deploy and configuration
 - Create database in Postgres and restore from dump `shopDump.sql`
 - Edit `application.properties` in resources accordingly to your database settings
-- Place `ShopAPI.war` and `application.properties` together in Tomcat deploy directory,
-application looks for `application.properties` in `./`
-- Deploy application
+- Run application as Spring Boot app in IDE
+- Alternatively you can build a jar using `mvn clean install spring-boot:repackage` 
+ and run it by `java -jar shopAPI.jar`
 
 ## Authentication, authorization and credentials
  - In database dump there is already one admin user: `admin:abc123`
@@ -23,8 +22,9 @@ application looks for `application.properties` in `./`
  or trusted:secret login/password combination` 
  - For simplicity OAuth default tables located in the same schema
  - You can edit access and refresh token validity in `oauth_client_details` table
- - To access REST API secured actions you have to provide access token in request params
+ - To access REST API secured actions you have to provide access token in request params e.g.
  ``access_token=c15de2f5-d7ec-4948-82ac-07ba2d1fb27d``
+ But without Authorization header.
 
 ## REST actions
 
