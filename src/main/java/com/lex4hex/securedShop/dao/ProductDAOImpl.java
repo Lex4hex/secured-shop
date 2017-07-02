@@ -92,7 +92,6 @@ public class ProductDAOImpl implements BaseDAO<Product>, ProductDAO {
 
     @Override
     public List<Product> findAll() {
-        Session session = sessionFactory.getCurrentSession();
         String hql = "from Product";
 
         TypedQuery<Product> query = entityManager.createQuery(hql, Product.class);

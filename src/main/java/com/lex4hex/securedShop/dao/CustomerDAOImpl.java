@@ -92,7 +92,6 @@ public class CustomerDAOImpl implements BaseDAO<Customer>, CustomerDAO {
 
     @Override
     public List<Customer> findAll() {
-        Session session = sessionFactory.getCurrentSession();
         String hql = "from Customer";
         TypedQuery<Customer> query = entityManager.createQuery(hql, Customer.class);
 

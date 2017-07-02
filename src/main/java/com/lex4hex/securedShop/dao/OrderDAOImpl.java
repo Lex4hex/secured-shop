@@ -83,7 +83,6 @@ public class OrderDAOImpl implements BaseDAO<Order>, OrderDAO {
 
     @Override
     public List<Order> findAll() {
-        Session session = sessionFactory.getCurrentSession();
         String hql = "from Order";
         TypedQuery<Order> query = entityManager.createQuery(hql, Order.class);
 

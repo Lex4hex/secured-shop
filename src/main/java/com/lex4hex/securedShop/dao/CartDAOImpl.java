@@ -60,7 +60,6 @@ public class CartDAOImpl implements BaseDAO<Cart>, CartDAO {
 
     @Override
     public List<Cart> findAll() {
-        Session session = sessionFactory.getCurrentSession();
         String hql = "from Cart";
         TypedQuery<Cart> query = entityManager.createQuery(hql, Cart.class);
 

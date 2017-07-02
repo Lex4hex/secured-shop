@@ -44,9 +44,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         public boolean matches(HttpServletRequest request) {
             String auth = request.getHeader("Authorization");
+
             return (auth != null && auth.startsWith("Basic"));
         }
     }
-
-
 }
