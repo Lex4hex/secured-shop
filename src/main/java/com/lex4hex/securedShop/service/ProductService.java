@@ -1,6 +1,7 @@
 package com.lex4hex.securedShop.service;
 
 import com.lex4hex.securedShop.model.Product;
+
 import java.util.List;
 
 public interface ProductService {

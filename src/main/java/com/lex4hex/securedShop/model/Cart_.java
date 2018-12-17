@@ -1,8 +1,8 @@
 package com.lex4hex.securedShop.model;
 
-import java.util.List;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
+import java.util.List;
 
 /**
  * The type Product metamodel.

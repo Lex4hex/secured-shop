@@ -1,7 +1,5 @@
 package com.lex4hex.securedShop.model;
 
-import java.sql.Timestamp;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +12,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "order", schema = "public", catalog = "shop")
@@ -57,9 +58,7 @@ public class Order {
 
         Order that = (Order) o;
 
-        return id == that.id &&
-            (creationTime != null ? creationTime.equals(that.creationTime)
-                : that.creationTime == null);
+        return id == that.id && (Objects.equals(creationTime, that.creationTime));
 
     }
 
@@ -83,7 +82,7 @@ public class Order {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "order_products", joinColumns = @JoinColumn(name = "order_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id"))
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
     public List<Product> getProducts() {
         return products;
     }

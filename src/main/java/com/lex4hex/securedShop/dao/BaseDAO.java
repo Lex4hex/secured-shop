@@ -1,7 +1,8 @@
 package com.lex4hex.securedShop.dao;
 
-import java.util.List;
 import org.springframework.scheduling.annotation.EnableAsync;
+
+import java.util.List;
 
 @EnableAsync(proxyTargetClass = true)
 interface BaseDAO<Entity> {

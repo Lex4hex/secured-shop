@@ -2,7 +2,6 @@ package com.lex4hex.securedShop.controller;
 
 import com.lex4hex.securedShop.model.Customer;
 import com.lex4hex.securedShop.service.CustomerServiceImpl;
-import javax.persistence.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.persistence.PersistenceException;
 
 @RestController
 public class CustomerRestController {
@@ -40,12 +41,10 @@ public class CustomerRestController {
             customerService.saveCustomer(customer);
         } catch (PersistenceException e) {
             return new ResponseEntity<>(
-                HttpStatus.INTERNAL_SERVER_ERROR);
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        HttpHeaders headers = new HttpHeaders();
-
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }

@@ -2,9 +2,10 @@ package com.lex4hex.securedShop.service;
 
 import com.lex4hex.securedShop.dao.CustomerDAOImpl;
 import com.lex4hex.securedShop.model.Customer;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service("customerService")
 public class CustomerServiceImpl implements CustomerService {

@@ -1,6 +1,5 @@
 package com.lex4hex.securedShop.model;
 
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "product", schema = "public", catalog = "shop")
@@ -64,15 +65,11 @@ public class Product {
             return false;
         }
 
-        if (name != null ? !name.equals(that.name) : that.name != null) {
+        if (!Objects.equals(name, that.name)) {
             return false;
         }
 
-        if (price != null ? !price.equals(that.price) : that.price != null) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(price, that.price);
     }
 
     @Override

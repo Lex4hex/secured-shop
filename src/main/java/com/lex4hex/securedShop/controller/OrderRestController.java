@@ -4,8 +4,6 @@ import com.lex4hex.securedShop.model.Customer;
 import com.lex4hex.securedShop.model.Order;
 import com.lex4hex.securedShop.service.CustomerServiceImpl;
 import com.lex4hex.securedShop.service.OrderServiceImpl;
-import java.util.List;
-import javax.persistence.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.PersistenceException;
+import java.util.List;
+
 @RestController
 public class OrderRestController {
 
@@ -24,7 +25,7 @@ public class OrderRestController {
 
     @Autowired
     public OrderRestController(CustomerServiceImpl customerService,
-        OrderServiceImpl orderService) {
+            OrderServiceImpl orderService) {
         this.customerService = customerService;
         this.orderService = orderService;
     }
@@ -33,7 +34,7 @@ public class OrderRestController {
      * Get list of all orders with related products
      */
     @RequestMapping(value = "/api/shop/orders", method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Order>> listAllOrders() {
         List<Order> orders;
 
@@ -41,12 +42,12 @@ public class OrderRestController {
             orders = orderService.findAllOrders();
         } catch (PersistenceException e) {
             return new ResponseEntity<>(
-                HttpStatus.INTERNAL_SERVER_ERROR);
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (orders.isEmpty()) {
             return new ResponseEntity<>(
-                HttpStatus.NO_CONTENT);
+                    HttpStatus.NO_CONTENT);
         }
 
         return new ResponseEntity<>(orders, HttpStatus.OK);
@@ -66,18 +67,17 @@ public class OrderRestController {
             customer = customerService.findById(customerId);
         } catch (PersistenceException e) {
             return new ResponseEntity<>(
-                HttpStatus.INTERNAL_SERVER_ERROR);
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (customer == null) {
             return new ResponseEntity<>(
-                HttpStatus.NOT_FOUND);
+                    HttpStatus.NOT_FOUND);
         }
 
         orderService.createOrder(customerId);
 
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }

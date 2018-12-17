@@ -2,11 +2,12 @@ package com.lex4hex.securedShop.service;
 
 import com.lex4hex.securedShop.dao.OrderDAOImpl;
 import com.lex4hex.securedShop.model.Order;
-import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {

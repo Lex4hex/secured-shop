@@ -1,6 +1,5 @@
 package com.lex4hex.securedShop.model;
 
-import java.sql.Timestamp;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customer", schema = "public", catalog = "shop")
@@ -67,16 +68,11 @@ public class Customer {
             return false;
         }
 
-        if (name != null ? !name.equals(that.name) : that.name != null) {
+        if (!Objects.equals(name, that.name)) {
             return false;
         }
 
-        if (creationTime != null ? !creationTime.equals(that.creationTime)
-            : that.creationTime != null) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(creationTime, that.creationTime);
     }
 
     @Override

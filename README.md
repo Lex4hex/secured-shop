@@ -1,5 +1,6 @@
 
-### Java Spring REST API with OAuth2.
+### Simple Spring API to experiment with OAuth2.
+#### Warning! Contains some really bad code practices, used in educational purposes only :) 
 
 ## Technological stack
 - Java 8

@@ -1,9 +1,7 @@
 package com.lex4hex.securedShop.security;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;/**/
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 
 @EnableWebSecurity
 @Order(2)
@@ -32,11 +33,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            .anonymous().disable()
-            .requestMatcher(new BasicRequestMatcher())
-            .authorizeRequests()
-            .antMatchers("/oauth/token").permitAll();
+                .csrf().disable()
+                .anonymous().disable()
+                .requestMatcher(new BasicRequestMatcher())
+                .authorizeRequests()
+                .antMatchers("/oauth/token").permitAll();
     }
 
     private static class BasicRequestMatcher implements RequestMatcher {

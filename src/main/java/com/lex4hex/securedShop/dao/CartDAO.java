@@ -10,7 +10,7 @@ interface CartDAO {
     /**
      * Add product to cart
      *
-     * @param cartId - id of cart to add product to
+     * @param cartId    - id of cart to add product to
      * @param productId - id of product to add to provided cart
      */
     void addProduct(Integer cartId, Integer productId);

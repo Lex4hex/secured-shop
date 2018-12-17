@@ -1,7 +1,5 @@
 package com.lex4hex.securedShop.model;
 
-import java.sql.Timestamp;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +12,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "cart", schema = "public", catalog = "shop")
@@ -57,9 +58,7 @@ public class Cart {
 
         Cart that = (Cart) o;
 
-        return id == that.id &&
-            (creationTime != null ? creationTime.equals(that.creationTime)
-                : that.creationTime == null);
+        return id == that.id && (Objects.equals(creationTime, that.creationTime));
     }
 
     @Override
@@ -82,7 +81,7 @@ public class Cart {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "cart_products", joinColumns = @JoinColumn(name = "cart_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id"))
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
     public List<Product> getProducts() {
         return products;
     }
