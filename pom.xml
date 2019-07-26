@@ -16,7 +16,7 @@
     </parent>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jackson.library>2.9.9</jackson.library>
+        <jackson.library>2.10.0.pr1</jackson.library>
     </properties>
 
     <dependencies>
